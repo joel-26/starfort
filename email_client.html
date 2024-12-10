@@ -1,0 +1,138 @@
+<?php
+// Start the session
+session_start();
+
+// Check if the user is logged in by checking the session variable
+if (!isset($_SESSION['user_id'])) {
+    // If the user is not logged in, redirect them to the authentication page
+    header('Location: auth.html');
+    exit();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarFort Email Client</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background-color: black;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input, textarea, button {
+            padding: 10px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        input, textarea {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        button {
+            background: linear-gradient(90deg, #e63946, #ff4081);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #ff4081, #e63946);
+        }
+
+        .success-animation {
+            display: none; /* Initially hidden */
+            font-size: 1.5rem;
+            margin-top: 20px;
+            color: #00ff00; /* Highlight for success message */
+            position: relative;
+            opacity: 0; /* Initially invisible */
+            transform: scale(0.5) translateZ(-200px); /* Start far back and scaled down */
+            animation: comeFromBack 2s ease-out forwards; /* Apply animation */
+        }
+
+        @keyframes comeFromBack {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) translateZ(-200px); /* Starting far and small */
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.2) translateZ(-50px); /* Overshooting for emphasis */
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateZ(0); /* Final position */
+            }
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #888;
+        }
+
+        .footer a {
+            color: inherit;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>StarFort Email Client</h1>
+        <form id="emailForm" method="POST" action="send_email.php">
+            <input type="text" name="senderName" placeholder="Sender Name" required>
+            <input type="email" name="senderEmail" placeholder="Sender Email" required>
+            <input type="email" name="recipient" placeholder="Recipient Email" required>
+            <input type="text" name="subject" placeholder="Subject" required>
+            <textarea name="message" rows="5" placeholder="Message" required></textarea>
+            <button type="submit">Send Email</button>
+        </form>
+        <div id="success" class="success-animation">✅ Email Sent Successfully!</div>
+        <div class="footer">
+            <p>Powered by <a href="#">StarFort</a> | Secure & Reliable Email Solutions</p>
+            <p><a href="auth.html">Logout</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Show success message after email is sent
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get("status");
+
+        if (status === "success") {
+            document.getElementById("emailForm").style.display = "none";
+            const successMessage = document.getElementById("success");
+            successMessage.style.display = "block"; // Display the success message
+        } else if (status === "error") {
+            alert("❌ Failed to send the email. Please try again.");
+        }
+    </script>
+</body>
+</html>

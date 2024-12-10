@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=1.0, user-scalable=yes">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Starfort</title>
+  <link rel="icon" href="https://pdmoo.dreamhosters.com/favicon.ico" type="image/x-icon">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background-color: #000;
+       position: sticky;
+         top: 0;
+          z-index: 1000;
+    }
+
+    .header .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(45deg, #6200ea, #8e24aa);
+      padding: 0.5rem 2rem;
+      border-radius: 50px;
+      box-shadow: 0 0 10px #6200ea;
+    }
+  
+
+    .nav {
+      display: flex;
+      justify-content: space-around;
+      flex: 1;
+      margin: 0 2rem;
+    }
+
+    .nav a {
+      margin: 0 1rem;
+      text-decoration: none;
+      color: #fff;
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    .nav a:hover {
+      color: #ff5722;
+      transform: scale(1.1);
+    }
+
+    .publish-button {
+      background-color: #6200ea;
+      color: #fff;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .publish-button:hover {
+      background-color: #4500b5;
+      transform: scale(1.1);
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none; /* Only show on mobile */
+      flex-direction: column;
+      cursor: pointer;
+      position: absolute;
+      right: 1rem;
+      top: 1.5rem;
+      z-index: 1010;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background-color: #fff;
+      margin: 3px 0;
+      transition: 0.4s;
+    }
+
+    /* Full-screen overlay for mobile nav */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1e0c2d, #000000);
+      z-index: 1000;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .overlay.active {
+      display: flex;
+    }
+
+    .overlay a {
+      color: #fff;
+      font-size: 1.5rem;
+      margin: 1rem;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .overlay a:hover {
+      color: #ff5722;
+    }
+
+    .closebtn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 2rem;
+      color: #ff5722; /* Orange color */
+      cursor: pointer;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      margin-bottom: 2rem;
+      font-size: 1.2rem;
+    }
+
+    .actions .secondary-action {
+      border: 1px solid #ff5722;
+      color: #ff5722;
+      background-color: transparent;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .actions .secondary-action:hover {
+      background-color: rgba(255, 87, 34, 0.1);
+      transform: scale(1.1);
+    }
+
+    /* Pricing Table Section */
+    .pricing-table {
+      display: flex;
+      justify-content: space-between;
+      gap: 3rem;
+      padding: 2rem 5%;
+      height: 70vh;
+    }
+
+    .pricing-plan {
+      background-color: #000;
+      color: #fff;
+      border: 1px solid lightgray;
+      border-radius: 10px;
+      padding: 2rem;
+      width: 30%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .pricing-plan h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+
+    .basic-plan {
+      background-color: #000;
+    }
+
+    .business-plan {
+      background-color: #9575cd;
+    }
+
+    .enterprise-plan {
+      background-color: #432675;
+    }
+
+    .pricing-plan:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .pricing-features {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    /* New Section Style */
+    .info-section {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 2rem;
+      gap: 2rem;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .info-box {
+      background-color: #000;
+      color: #ff5722;
+      padding: 1.5rem;
+      border: 2px solid #ff5722;
+      border-radius: 10px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-section .image {
+      flex: 2;
+      max-width: 600px;
+      height: 600px;
+      border-radius: 10px;
+      margin-right: 2rem;
+      object-fit: cover;
+    }
+
+    .info-section .image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .info-box:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .info-content {
+      flex: 1;
+    }
+
+    .info-content h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .info-content p {
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    /* New Promo Banner */
+    .promo-banner {
+      background: #9575cd;
+      color: #fff;
+      text-align: left;
+      padding: 2rem;
+      margin: 2rem 5%;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      height: 50vh;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .promo-banner:hover {
+      background: linear-gradient(135deg, #1e0c2d, #000000);
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .promo-banner h2 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      font-weight: normal;
+    }
+
+    .promo-banner h3 {
+      font-size: 1.7rem;
+      margin-bottom: 0;
+      font-weight: normal;
+    }
+
+    .promo-banner .promo-button {
+      background-color: #ff5722;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.2rem;
+      padding: 0.7rem 2rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      position: absolute;
+      right: 50px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .promo-banner .promo-button:hover {
+      background-color: #e64a19;
+    }
+
+    /* Contact Us Section */
+    .contact-section {
+      background: #432675;
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+      margin: 2rem 5%;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .contact-section:hover {
+      background: linear-gradient(135deg, #6200ea, #000000);
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .contact-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-section p {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      font-weight: normal;
+    }
+
+    .contact-form {
+      max-width: 400px;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .contact-form:hover {
+      transform: translateY(-5px);
+    }
+
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      margin-bottom: 1rem;
+      outline: none;
+    }
+
+    .contact-form button {
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #ff5722;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .contact-form button:hover {
+      background-color: #e64a19;
+      transform: scale(1.05);
+    }
+
+    .success-animation {
+      display: none;
+      font-size: 1.5rem;
+      margin-top: 20px;
+      color: #00ff00;
+      position: relative;
+      opacity: 0;
+      transform: scale(0.5) translateZ(-200px);
+      animation: comeFromBack 2s ease-out forwards;
+    }
+
+    @keyframes comeFromBack {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) translateZ(-200px);
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1.2) translateZ(-50px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateZ(0);
+      }
+    }
+
+    /* Footer */
+    .footer {
+      margin: 2rem 5%;
+      text-align: center;
+      color: #fff;
+    }
+
+    .footer p {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer a {
+      color: inherit;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .footer p.copyright {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .overlay.active {
+        display: flex;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .pricing-table {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .pricing-plan {
+        width: 100%;
+        margin-bottom: 2rem;
+      }
+
+      .info-section {
+        flex-direction: column;
+      }
+
+      .promo-banner {
+        flex-direction: column;
+        text-align: center;
+        height: auto;
+      }
+
+      .promo-banner h2 {
+        font-size: 2rem;
+      }
+
+      .promo-banner h3 {
+        font-size: 1.5rem;
+      }
+
+      .promo-banner .promo-button {
+        position: static;
+        transform: none;
+        margin-top: 1rem;
+      }
+
+      .hamburger {
+        display: flex; /* Ensure it only shows on mobile */
+      }
+
+      .overlay {
+        background: linear-gradient(135deg, #1e0c2d, #000000); /* Background gradient */
+      }
+
+      .closebtn {
+        color: #ff5722; /* Orange color for close button */
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo"><i class="fa fa-eercast" aria-hidden="true"></i>  Starfort</div>
+    <div class="hamburger" onclick="toggleMenu()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <nav class="nav">
+      <a href="index.html"><i class="fa fa-home"></i>  Home</a>
+      <a href="aboutus.html"><i class="fa fa-info-circle" ></i>  About Us</a>
+      <a href="#programs"><i class="fa fa-list-ul" ></i>  Programs</a>
+      <a href="#pricing"><i class="fa fa-credit-card" ></i>  Pricing</a>
+      <a href="index.html#contact-us"><i class="fa fa-phone" ></i>  Contact Us</a>
+      <a href="auth.html"><i class="fa fa-eercast" ></i>  SpoofGround</a>
+    </nav>
+  </header>
+
+  <nav class="overlay" id="mobile-nav">
+    <span class="closebtn" onclick="toggleMenu()">&times;</span>
+    <a href="index.html">Home</a>
+    <a href="aboutus.html">About Us</a>
+    <a href="#programs">Programs</a>
+    <a href="#pricing">Pricing</a>
+    <a href="index.html#contact-us">Contact Us</a>
+    <a href="auth.html">SpoofGround</a>
+  </nav>
+
+  <main class="hero">
+    <h1>Empower Your Cybersecurity Career with Starfort</h1>
+    <p>
+      Join our tailored cybersecurity training programs to gain the skills and knowledge 
+      needed to succeed in the dynamic field of cybersecurity. Our hands-on approach ensures 
+      you are well-equipped to tackle real-world challenges.
+    </p>
+    <div class="actions">
+      <button class="secondary-action">Learn more about us</button>
+    </div>
+  </main>
+
+  <!-- Pricing Table Section -->
+  <section class="pricing-table">
+    <div class="pricing-plan basic-plan">
+      <h2>Detect</h2>
+      <div class="pricing-features">
+        <p>Identify and respond to potential threats quickly and efficiently to minimize damage and prevent breaches.</p>
+      </div>
+    </div>
+    <div class="pricing-plan business-plan">
+      <h2>Defend</h2>
+      <div class="pricing-features">
+        <p>Implement comprehensive security measures to safeguard systems, networks, and data from attacks.</p>
+      </div>
+    </div>
+    <div class="pricing-plan enterprise-plan">
+      <h2>Deter</h2>
+        <div class="pricing-features">
+        <p>Employ strategies to discourage cyber attacks by making it difficult and unappealing for attackers to target your organization.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Info Section -->
+  <section class="info-section">
+    <div class="image">
+      <img src="https://pdmoo.dreamhosters.com/Images/cyber_img2.jpg" alt="Common Image">
+    </div>
+    <div class="info-content">
+      <div class="info-box">
+        <h2>Tailored Programs</h2>
+        <p>Customized cybersecurity training programs to meet the specific needs of each institution.</p>
+      </div>
+      <div class="info-box">
+        <h2>Hands-On Learning</h2>
+        <p>Practical, hands-on experience in advanced lab environments to reinforce theoretical knowledge.</p>
+      </div>
+      <div class="info-box">
+        <h2>Career Guidance</h2>
+        <p>Comprehensive career guidance and support to help students succeed in the cybersecurity industry.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Promo Banner -->
+  <section class="promo-banner">
+    <div>
+      <h2>Ready to take your cybersecurity skills to the <br>next level?</br> </h2> 
+      <h3>Explore our pricing tiers and choose the one that best fits your institution's needs.</h3>
+    </div>
+    <button class="promo-button">View Pricing Tiers</button>
+  </section>
+
+  <!-- Contact Us Section -->
+  <section id="contact-us" class="contact-section">
+        <h2>Contact Us</h2>
+    <p>We'd love to hear from you! Please fill out the form below and we'll get in touch with you shortly.</p>
+    <form class="contact-form">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit" class="promo-button">Send Message</button>
+    </form>
+    <div id="success" class="success-animation">✅ Message Sent Successfully!</div>
+  </section>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>&copy; 2024 <a href="index.html" style="color: #ff5722;">Starfort</a>. All rights reserved.</p>
+  </div>
+
+  <script>
+    // Toggle navigation menu
+    function toggleMenu() {
+      const nav = document.getElementById('mobile-nav');
+      nav.classList.toggle('active');
+      document.querySelector('.hamburger').style.display = nav.classList.contains('active') ? 'none' : 'flex';
+      document.querySelector('.closebtn').style.display = nav.classList.contains('active') ? 'block' : 'none';
+    }
+
+    // Show success message after form submission
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get("status");
+
+    if (status === "success") {
+      document.querySelector(".contact-form").style.display = "none";
+      const successMessage = document.getElementById("success");
+      successMessage.style.display = "block";
+    } else if (status === "error") {
+      alert("❌ Failed to send the message. Please try again.");
+    }
+  </script>
+</body>
+</html>
